@@ -20,6 +20,8 @@ from escapism import escape
 
 import git
 
+from .image_handler import ImageHandler
+
 
 class CustomDockerSpawner(DockerSpawner):
     poll_interval = Integer(
@@ -33,6 +35,7 @@ class CustomDockerSpawner(DockerSpawner):
         self._user_log = []
         self._is_failed = False
         self._is_building = False
+        self._image_handler = ImageHandler()
 
     def _docker(self, method, *args, **kwargs):
         """
@@ -118,7 +121,12 @@ class CustomDockerSpawner(DockerSpawner):
     @property
     def escaped_repo_url(self):
         if self._escaped_repo_url is None:
-            self._escaped_repo_url = re.sub("[-:/._]+", "_", self.repo_url)
+            repo_url = self.repo_url
+            # github.com/repo and githu.com/repo.git
+            # are the same, so erase .git if needed
+            if repo_url.endswith('.git'):
+                repo_url = repo_url[:-4]
+            self._escaped_repo_url = re.sub("[-:/._]+", "_", repo_url)
         return self._escaped_repo_url
 
     @property
@@ -185,13 +193,13 @@ class CustomDockerSpawner(DockerSpawner):
         repo = git.Repo(tmp_dir)
         self.repo_sha = repo.rev_parse("HEAD")
 
-        image_name = "everware/{}-{}-{}".format(
-            self.user.name,
+        image_name = "everware/{}-{}".format(
             self.escaped_repo_url,
             self.repo_sha
         )
 
         self._add_to_log('Building image')
+        self._image_handler.start_building(image_name)
 
         image = yield self.get_image(image_name)
         if image is None:
@@ -204,6 +212,7 @@ class CustomDockerSpawner(DockerSpawner):
                 decode=True
             )
             self.log.debug("".join(str(line) for line in build_log))
+            self._image_handler.finish_building(image_name)
 
         return image_name
 
