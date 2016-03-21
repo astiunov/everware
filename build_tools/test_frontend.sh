@@ -43,6 +43,11 @@ fi
 
 ADDED_CONT=0
 
+echo ">>>>>>> Checking sleep container"
+docker ps -a -q | head -1 | xargs docker inspect
+docker ps -a -q | head -1 | xargs docker logs
+ecgo "<<<<<<< Done"
+
 docker ps -a --format "{{.Command}}" | grep -v sleep | sort >new_cont
 diff old_cont new_cont || ADDED_CONT=1
 

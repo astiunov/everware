@@ -70,6 +70,7 @@ def scenario_no_jupyter(user):
     driver.find_element_by_id("login_submit").click()
     user.wait_for_element_present(By.ID, "start")
     driver.find_element_by_id("start").click()
+    user.wait_for_element_present(By.ID, "repository_input")
     driver.find_element_by_id("repository_input").clear()
     driver.find_element_by_id("repository_input").send_keys('docker:busybox')
     driver.find_element_by_xpath("//input[@value='Spawn']").click()
@@ -80,6 +81,7 @@ def scenario_no_jupyter(user):
     assert text in driver.page_source
     user.log("correct, no jupyter in container")
     driver.find_element_by_id("resist").click()
+    user.wait_for_element_present(By.ID, "repository_input")
     driver.find_element_by_id("repository_input").clear()
     driver.find_element_by_id("repository_input").send_keys(user.repo)
     driver.find_element_by_xpath("//input[@value='Spawn']").click()
@@ -105,6 +107,7 @@ def scenario_timeout(user):
     driver.find_element_by_id("login_submit").click()
     user.wait_for_element_present(By.ID, "start")
     driver.find_element_by_id("start").click()
+    user.wait_for_element_present(By.ID, "repository_input")
     driver.find_element_by_id("repository_input").clear()
     driver.find_element_by_id("repository_input").send_keys(
         'https://github.com/everware/test_long_creation'
@@ -117,6 +120,7 @@ def scenario_timeout(user):
     user.log('correct, timeout happened')
     driver.find_element_by_id("resist").click()
     user.log("resist clicked")
+    user.wait_for_element_present(By.ID, "repository_input")
     driver.find_element_by_id("repository_input").clear()
     driver.find_element_by_id("repository_input").send_keys(
         'https://github.com/everware/test_long_creation'
@@ -138,6 +142,7 @@ def scenario_no_dockerfile(user):
     driver.find_element_by_id("login_submit").click()
     user.wait_for_element_present(By.ID, "start")
     driver.find_element_by_id("start").click()
+    user.wait_for_element_present(By.ID, "repository_input")
     driver.find_element_by_id("repository_input").clear()
     driver.find_element_by_id("repository_input").send_keys(
         'https://github.com/everware/runnable_examples'
