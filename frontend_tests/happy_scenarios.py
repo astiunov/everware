@@ -45,6 +45,7 @@ def scenario_full(user):
     driver.find_element_by_id("login_submit").click()
     user.wait_for_element_present(By.ID, "start")
     driver.find_element_by_id("start").click()
+    user.wait_for_element_present(By.ID, "repository_input")
     driver.find_element_by_id("repository_input").clear()
     driver.find_element_by_id("repository_input").send_keys(user.repo)
     driver.find_element_by_xpath("//input[@value='Spawn']").click()
