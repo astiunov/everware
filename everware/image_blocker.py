@@ -15,7 +15,7 @@ def singleton(cls):
 
 
 @singleton
-class ImageHandler():
+class ImageBlocker():
 
     def __init__(self):
         self._images = {}

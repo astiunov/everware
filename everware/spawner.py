@@ -25,7 +25,7 @@ import git
 
 from escapism import escape
 
-from .image_handler import ImageHandler
+from .image_blocker import ImageBlocker
 
 
 ssl._create_default_https_context = ssl._create_unverified_context
@@ -128,7 +128,7 @@ class CustomDockerSpawner(DockerSpawner, GitMixin):
         self._user_log = []
         self._is_failed = False
         self._is_building = False
-        self._image_handler = ImageHandler()
+        self._image_blocker = ImageBlocker()
         self._cur_waiter = None
         super(CustomDockerSpawner, self).__init__(**kwargs)
 
@@ -286,7 +286,7 @@ class CustomDockerSpawner(DockerSpawner, GitMixin):
 
         self._add_to_log('Building image (%s)' % image_name)
 
-        with self._image_handler.get_waiter(image_name) as self._cur_waiter:
+        with self._image_blocker.get_waiter(image_name) as self._cur_waiter:
             if self._cur_waiter.last_exception:
                 raise self._cur_waiter.last_exception
             yield self._cur_waiter.block()
