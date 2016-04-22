@@ -45,6 +45,9 @@ install:
   - npm list
   - if [ -d $HOME/frontend-test-screenshots/ ] ; then ls -alR $HOME/frontend-test-screenshots/ ; fi
   - python -c "import multiprocessing; print('CPU cores - %d' % multiprocessing.cpu_count())"
+  - ls
+  - ls everware/
+  - cat $(which everware-server)
 
 script:
   - make test

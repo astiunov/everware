@@ -2,7 +2,7 @@
 import jupyterhub.handlers.pages as pages
 import jupyterhub.handlers.base as base
 from jupyterhub import app
-from everware import SpawnHandler, UserSpawnHandler, HomeHandler
+from everware import HomeHandler, SpawnHandler, UserSpawnHandler
 import sys
 
 handlers_map = {
