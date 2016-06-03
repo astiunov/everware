@@ -264,6 +264,8 @@ class CustomDockerSpawner(DockerSpawner, GitMixin):
             yield super(CustomDockerSpawner, self).start(
                 image=image_name
             )
+            self.log.info('Adding to proxy')
+            self.log.info('Having ip %s and port %s' % (self.user.server.ip, self.user.server.port))
             self._add_to_log('Adding to proxy')
         except gen.TimeoutError:
             self._is_failed = True
